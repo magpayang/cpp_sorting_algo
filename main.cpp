@@ -5,6 +5,8 @@ using namespace std;
 void buble_sort(int input_array[], int array_size);
 void selection_sort(int input_array[], int array_size);
 void insertion_sort(int input_array[], int array_size);
+void Shell_sort(int input_array[], int array_size);
+void SplitArray(int input_array[], int size_of_array, int start_idx, int end_idx);
 
 int main(){
 //    int my_array[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13};
@@ -18,9 +20,12 @@ int main(){
     }
     cout<<"\n";
 
-   //buble_sort(my_array, size_of_my_array);
-   //selection_sort(my_array, size_of_my_array);
-   insertion_sort(my_array, size_of_my_array);
+//   buble_sort(my_array, size_of_my_array);
+//   selection_sort(my_array, size_of_my_array);
+//   insertion_sort(my_array, size_of_my_array);
+//    Shell_sort(my_array, size_of_my_array);
+
+    SplitArray(my_array, size_of_my_array, 0, size_of_my_array);
 
     return 0;
 
@@ -90,4 +95,44 @@ void insertion_sort(int input_array[], int array_size){
         }
     cout<<"\n";
     }
+
+void Shell_sort(int input_array[], int array_size){  // general form of insertion sort
+    int gaps[] = {63,33,17,9,5,3,1};  // https://en.wikipedia.org/wiki/Thomas_N._Hibbard
+    int gaps_size = *(&gaps+1)-gaps;
+    for (int jdx = 0; jdx<gaps_size; ++jdx){ // loop through gap array
+        int gap = gaps[jdx];
+
+        for(int idx = gap; idx<array_size; ++idx){ // loop through the array
+            int current = input_array[idx];
+            int current_index = idx;
+            int increment=0;
+
+            while((idx-gap-increment>=0)&&(input_array[idx - gap -increment] > current)){
+                    input_array[idx-increment] = input_array[idx-gap-increment];
+                    increment += gap;
+            }
+            input_array[idx-gap-increment+gap] = current;
+        }
+    }
+
+    for (int kdx = 0; kdx < array_size; ++kdx){
+        cout<<input_array[kdx]<<" ";
+    }
+    cout<<"\n";
+}
+
+void SplitArray(int input_array[], int size_of_array, int start_idx, int end_idx){
+    int new_array[end_idx - start_idx];
+
+    for (int idx = 0; idx<(end_idx-start_idx); ++idx){
+        new_array[idx] = input_array[idx];
+    }
+
+    cout<<"New array \n";
+    for (int idx = 0; idx < (end_idx-start_idx); ++ idx){
+        cout<<new_array[idx]<<" ";
+    }
+    cout<<"\n";
+}
+
 
