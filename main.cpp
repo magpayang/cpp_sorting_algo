@@ -18,33 +18,23 @@ int main(){
 //    int my_array[] = {5,3,1,0};
     int my_array[] = {9,9,9,5,4,3,2,1,3,4,3,2,1,3,4,5,6,7,8,9,9,7,6,5,4,6,6,6,0,0,0,4,3,2,2,5,6,7,8,9,7,6,5,4,3,3,0,0,3,3,2,3,4,3,2,4,5,6,7,8,9,0,8,8,9,0,9};
     int array_size = *(&my_array + 1) - my_array;
-
     printArray(my_array, array_size);
-    cout<<"\n-- Sorting --\n";
 
+    cout<<"\n-- Sorting --\n";
     insertion_sort(my_array, array_size);
-    cout<<"-- Sorted Array --\n";
+
+//    cout<<"-- Sorted Array --\n";
 //    printArray(my_array, array_size);
-    cout<<endl;
+//    cout<<endl;
 
     int my_array2[] = {9,9,9,5,4,3,2,1,3,4,3,2,1,3,4,5,6,7,8,9,9,7,6,5,4,6,6,6,0,0,0,4,3,2,2,5,6,7,8,9,7,6,5,4,3,3,0,0,3,3,2,3,4,3,2,4,5,6,7,8,9,0,8,8,9,0,9};
 
-<<<<<<< HEAD
-//   buble_sort(my_array, size_of_my_array);
-//   selection_sort(my_array, size_of_my_array);
-//   insertion_sort(my_array, size_of_my_array);
-//    Shell_sort(my_array, size_of_my_array);
-
-    SplitArray(my_array, size_of_my_array, 0, size_of_my_array);
-=======
-
     cout<<"\n-- Sorting --\n";
-
     merge_sort(my_array2, array_size, 0, array_size-1);
-    cout<<"-- Sorted Array --\n";
-    printArray(my_array2, array_size);
-    cout<<endl;
->>>>>>> b1fec57f59314002988631f00635aff1cb715ebd
+
+//    cout<<"-- Sorted Array --\n";
+//    printArray(my_array2, array_size);
+//    cout<<endl;
 
     return 0;
 
@@ -115,6 +105,30 @@ void insertion_sort(int input_array[], int array_size){
     cout<<"\n";
     }
 
+void Shell_sort(int input_array[], int array_size){  // general form of insertion sort
+    int gaps[] = {63,33,17,9,5,3,1};  // https://en.wikipedia.org/wiki/Thomas_N._Hibbard
+    int gaps_size = *(&gaps+1)-gaps;
+    for (int jdx = 0; jdx<gaps_size; ++jdx){ // loop through gap array
+        int gap = gaps[jdx];
+
+        for(int idx = gap; idx<array_size; ++idx){ // loop through the array
+            int current = input_array[idx];
+            int current_index = idx;
+            int increment=0;
+
+            while((idx-gap-increment>=0)&&(input_array[idx - gap -increment] > current)){
+                    input_array[idx-increment] = input_array[idx-gap-increment];
+                    increment += gap;
+            }
+            input_array[idx-gap-increment+gap] = current;
+        }
+    }
+
+    for (int kdx = 0; kdx < array_size; ++kdx){
+        cout<<input_array[kdx]<<" ";
+    }
+    cout<<"\n";
+}
 
 int * merge_func(int * input_array, int array_size, int first_idx, int midpoint_idx, int last_idx){
     int length_left_array = midpoint_idx - first_idx + 1; // at base case, midpoint_idx = first_idx. add 1 to allow space for array
@@ -176,6 +190,12 @@ int * merge_sort(int * input_array, int array_size, int first_idx, int last_idx)
 
 void printArray(int * input_array, int array_size){
     for (int i = 0; i < array_size; ++i){
+        cout<<input_array[i]<<" ";
+    }
+}
+
+void printArray2(int * input_array, int array_size){
+    for (int i = 0; i < array_size; ++i){
         if (input_array[i] == 9){
             cout<<"+"<<" ";
         }
@@ -183,37 +203,6 @@ void printArray(int * input_array, int array_size){
             cout<<" "<<" ";
         }
     }
-}
-
-
-
-
-
-
-
-void Shell_sort(int input_array[], int array_size){  // general form of insertion sort
-    int gaps[] = {63,33,17,9,5,3,1};  // https://en.wikipedia.org/wiki/Thomas_N._Hibbard
-    int gaps_size = *(&gaps+1)-gaps;
-    for (int jdx = 0; jdx<gaps_size; ++jdx){ // loop through gap array
-        int gap = gaps[jdx];
-
-        for(int idx = gap; idx<array_size; ++idx){ // loop through the array
-            int current = input_array[idx];
-            int current_index = idx;
-            int increment=0;
-
-            while((idx-gap-increment>=0)&&(input_array[idx - gap -increment] > current)){
-                    input_array[idx-increment] = input_array[idx-gap-increment];
-                    increment += gap;
-            }
-            input_array[idx-gap-increment+gap] = current;
-        }
-    }
-
-    for (int kdx = 0; kdx < array_size; ++kdx){
-        cout<<input_array[kdx]<<" ";
-    }
-    cout<<"\n";
 }
 
 void SplitArray(int input_array[], int size_of_array, int start_idx, int end_idx){
