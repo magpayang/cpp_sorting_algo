@@ -8,24 +8,43 @@ void insertion_sort(int input_array[], int array_size);
 void Shell_sort(int input_array[], int array_size);
 void SplitArray(int input_array[], int size_of_array, int start_idx, int end_idx);
 
+int * merge_func(int * input_array, int array_size, int first_idx, int midpoint_idx, int last_idx);
+int * merge_sort(int * input_array, int array_size, int first_idx, int last_idx);
+void printArray(int * input_array, int array_size);
+
 int main(){
-//    int my_array[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13};
-    int my_array[] = {9,8,7,6,5,4,3,2,1,0};
-//    int my_array[] = {9,8,7,6,5,0,1,2,3,4};
-//    int my_array[] = {0,1,2,3,4,5,6,7,8,9};
-    int size_of_my_array = *(&my_array + 1) - my_array;
+    cout << "-- Original Array --" << endl;
+//    int my_array[] = {9,8,7,6,5,4,3,2,1,0};
+//    int my_array[] = {5,3,1,0};
+    int my_array[] = {9,9,9,5,4,3,2,1,3,4,3,2,1,3,4,5,6,7,8,9,9,7,6,5,4,6,6,6,0,0,0,4,3,2,2,5,6,7,8,9,7,6,5,4,3,3,0,0,3,3,2,3,4,3,2,4,5,6,7,8,9,0,8,8,9,0,9};
+    int array_size = *(&my_array + 1) - my_array;
 
-    for (int idx = 0; idx < size_of_my_array; ++ idx){
-        cout<<my_array[idx]<<" ";
-    }
-    cout<<"\n";
+    printArray(my_array, array_size);
+    cout<<"\n-- Sorting --\n";
 
+    insertion_sort(my_array, array_size);
+    cout<<"-- Sorted Array --\n";
+//    printArray(my_array, array_size);
+    cout<<endl;
+
+    int my_array2[] = {9,9,9,5,4,3,2,1,3,4,3,2,1,3,4,5,6,7,8,9,9,7,6,5,4,6,6,6,0,0,0,4,3,2,2,5,6,7,8,9,7,6,5,4,3,3,0,0,3,3,2,3,4,3,2,4,5,6,7,8,9,0,8,8,9,0,9};
+
+<<<<<<< HEAD
 //   buble_sort(my_array, size_of_my_array);
 //   selection_sort(my_array, size_of_my_array);
 //   insertion_sort(my_array, size_of_my_array);
 //    Shell_sort(my_array, size_of_my_array);
 
     SplitArray(my_array, size_of_my_array, 0, size_of_my_array);
+=======
+
+    cout<<"\n-- Sorting --\n";
+
+    merge_sort(my_array2, array_size, 0, array_size-1);
+    cout<<"-- Sorted Array --\n";
+    printArray(my_array2, array_size);
+    cout<<endl;
+>>>>>>> b1fec57f59314002988631f00635aff1cb715ebd
 
     return 0;
 
@@ -89,12 +108,88 @@ void insertion_sort(int input_array[], int array_size){
                 ++increment;
               }
         input_array[idx-1-increment+1]=current;  // +1 is for shifting back to previous position
+        printArray(input_array, array_size);
+        cout<<"\n";
     }
-        for (int kdx = 0; kdx < array_size; ++kdx){
-            cout<<input_array[kdx]<<" ";
-        }
+
     cout<<"\n";
     }
+
+
+int * merge_func(int * input_array, int array_size, int first_idx, int midpoint_idx, int last_idx){
+    int length_left_array = midpoint_idx - first_idx + 1; // at base case, midpoint_idx = first_idx. add 1 to allow space for array
+    int length_right_array = last_idx - midpoint_idx;
+
+    int left_array[length_left_array];
+    int right_array[length_right_array];
+
+    for (int i = 0; i < length_left_array; ++i){
+        left_array[i] = input_array[first_idx + i];
+    }
+    for (int i = 0; i < length_right_array; ++i){
+        right_array[i] = input_array[midpoint_idx + i + 1];
+    }
+
+    int i = 0;
+    int j = 0;
+    int k = first_idx;
+
+    while(i < length_left_array && j < length_right_array){
+//        cout<<"k: "<<k<<" i: "<<i<<" j: "<<j<<"\n";
+        if (left_array[i] <= right_array[j]){
+
+            input_array[k] = left_array[i];
+            ++i;
+        }
+        else {
+
+            input_array[k] = right_array[j];
+            ++j;
+        }
+        ++k;
+    }
+
+    while( i < length_left_array ){
+        input_array[k] = left_array[i];
+        i++;
+        k++;
+    }
+
+    while( j < length_right_array ){
+        input_array[k] = right_array[j];
+        j++;
+        k++;
+    }
+    printArray(input_array, array_size);
+    cout<<"\n";
+}
+
+int * merge_sort(int * input_array, int array_size, int first_idx, int last_idx){
+    if (first_idx < last_idx){ // for as long as first_idx does not equal to last_idx, were fine
+        int midpoint_idx = (first_idx + last_idx)/2; // floor division.
+        // left_array[] = {items from first_idx to midpoint_idx}. right_array[] = {items from midpoint_idx + 1 to last_index]}
+        merge_sort(input_array, array_size, first_idx, midpoint_idx);
+        merge_sort(input_array, array_size, midpoint_idx + 1, last_idx);
+        merge_func(input_array, array_size, first_idx, midpoint_idx,last_idx);
+    }
+}
+
+void printArray(int * input_array, int array_size){
+    for (int i = 0; i < array_size; ++i){
+        if (input_array[i] == 9){
+            cout<<"+"<<" ";
+        }
+        else{
+            cout<<" "<<" ";
+        }
+    }
+}
+
+
+
+
+
+
 
 void Shell_sort(int input_array[], int array_size){  // general form of insertion sort
     int gaps[] = {63,33,17,9,5,3,1};  // https://en.wikipedia.org/wiki/Thomas_N._Hibbard
